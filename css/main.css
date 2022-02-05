@@ -386,6 +386,41 @@ ul li input[type=checkbox]:checked ~ i:after {
   }
 }
 
+.podcastTitle {
+  text-align: center;
+}
+
+.podcastChannels {
+  text-align: center;
+  /* font-size: 80%; */
+  margin-top: 3rem;
+}
+
+.podcastChannels a {
+  color: #ffffff;
+  line-height: 1;
+}
+
+.podcast {
+  text-align: center;
+}
+
+.podcast .video img {
+  max-width: 100%;
+  height: auto;
+}
+
+.podcast .video a,
+.podcast .video p {
+  color: #ffffff;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.podcast .video p.published {
+  font-size: 80%;
+}
+
 
 /* ==========================================================================
    Helper classes

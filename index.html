@@ -15,6 +15,45 @@
         <link rel="stylesheet" href="css/main.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c:700" rel="stylesheet">
+
+        <!-- Get and append podccasts to the DOM -->
+        <script>
+          (async () => {
+            const key = "AIzaSyCV_iZjDuCc9k6FGC5ayMr7SMKS3-UUy84";
+            const channelId = "UCPt7-5_mTqRHZgFNLWVlrLQ";
+            const videoIds = [];
+            const videos = [];
+            let count = 0;
+            const channelResponse = await fetch(`https://www.googleapis.com/youtube/v3/search?channelId=${channelId}&key=${key}`);
+            const channelData = await channelResponse.json();
+
+            channelData.items.forEach((item) => {
+              if (item.id.kind === "youtube#video") {
+                videoIds.push(item.id.videoId);
+              }
+            });
+
+            const videosResponse = await fetch(`https://www.googleapis.com/youtube/v3/videos?id=${videoIds.join(',')}&key=${key}&part=snippet`);
+            const videosData = await videosResponse.json();
+            let videosHtml = '';
+
+            videosData.items.forEach((video, i) => {
+              if (count >= 3) return;
+              count++;
+              return videosHtml += `<div class="video">
+                <a target="_blank" href="https://www.youtube.com/watch?v=${video.id}}">
+                  <img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}" />
+                </a>
+                <p class="title">
+                  <a target="_blank" href="https://www.youtube.com/watch?v=${video.id}}"><strong>${video.snippet.title}</strong></a>
+                </p>
+                <p class="published">Published: ${new Date(video.snippet.publishedAt).toLocaleString().split(',')[0]}</p>
+              </div>`;
+            });
+
+            document.querySelector('.podcast').innerHTML = videosHtml;
+          })();
+        </script>
     </head>
     <body>
       <!--[if lte IE 9]>
@@ -68,6 +107,11 @@
             <iframe width="560" height="315" src="https://www.youtube.com/embed/QqqRI7SQrpc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
         </div>
+
+        <h2 class="podcastTitle rounded">Podcast Episodes:</h2>
+        <div class="split podcast"></div>
+
+        <p class="podcastChannels">Listen on <a href="https://www.youtube.com/channel/UCPt7-5_mTqRHZgFNLWVlrLQ" target="_blank">YouTube</a>, <a href="https://music.amazon.com/podcasts/752e6dbc-ebc6-4242-afdd-4ce9ace6430a" target="_blank">Amazon</a>, <a href="https://podcasts.apple.com/us/podcast/imagine-2040-st-joseph/id1604917808" target="_blank">Apple</a> or <a href="https://podcasts.google.com/feed/aHR0cHM6Ly9mZWVkLnBvZGJlYW4uY29tL0ltYWdpbmUyMDQwL2ZlZWQueG1s" target="_blank">Google</a></p>
       </div>
 
       <div class="split">
