@@ -24,7 +24,7 @@
             const videoIds = [];
             const videos = [];
             let count = 0;
-            const channelResponse = await fetch(`https://www.googleapis.com/youtube/v3/search?channelId=${channelId}&key=${key}`);
+            const channelResponse = await fetch(`https://www.googleapis.com/youtube/v3/search?channelId=${channelId}&key=${key}&maxResults=50`);
             const channelData = await channelResponse.json();
 
             channelData.items.forEach((item) => {
@@ -37,7 +37,7 @@
             const videosData = await videosResponse.json();
             let videosHtml = '';
 
-            videosData.items.forEach((video, i) => {
+            videosData.items.reverse().forEach((video, i) => {
               if (count >= 3) return;
               count++;
               return videosHtml += `<div class="video">
